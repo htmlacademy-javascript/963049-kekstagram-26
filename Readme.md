@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Энвер Белялов](https://up.htmlacademy.ru/javascript/26/user/963049).
-* Наставник: [Глеб Клецков](https://htmlacademy.ru/profile/id1487865).gi
+* Наставник: [Глеб Клецков](https://htmlacademy.ru/profile/id1487865).
 
 ---
 
