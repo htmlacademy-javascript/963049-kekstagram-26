@@ -66,9 +66,7 @@ const getRandomNumber = function (numberFrom, numberBefore) {
   return Math.floor(Math.random() * (numberBefore - numberFrom + 1) + numberFrom);
 };
 
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomNumber(0, elements.length - 1)];
-};
+const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
 let comment = 0;
 const getCommentId = () => {
@@ -78,18 +76,17 @@ const getCommentId = () => {
 
 const newComments = () => ({
   id: getCommentId(),
-  avatar: 'img/avatar-${getRandomNumber(AVATARS.MIN,AVATARS.MAX)}.svg',
+  avatar: `img/avatar-${getRandomNumber(AVATARS.MIN,AVATARS.MAX)}.svg`,
   message: getRandomArrayElement(commentMessage),
   name: getRandomArrayElement(commentName),
 });
 
 const postDesription = () => Array.from({length: PHOTO_AMOUNT}, (item, index) => ({
   id: index + 1,
-  url: 'photos/${index + 1}.jpg',
+  url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomArrayElement(LIKES),
   Comments: Array.from({length: getRandomNumber(commentsValues.MIN,commentsValues.MAX)},newComments),
 }));
 
 postDesription();
-
