@@ -33,6 +33,7 @@ const LIKES = {
   MAX: 200,
 };
 
+// eslint-disable-next-line no-unused-vars
 const AVATARS = {
   MIN: 1,
   MAX: 6,
@@ -50,13 +51,14 @@ const commentMessage = [
 const commentName = ['Артём','Вася','Коля','Петя','Вова','Жора'];
 
 const commentsValues = {
-  MIN: 1, MAX: 3,
+  MIN: 1,
+  MAX: 3,
 };
 
 const stringLength = (testString, maxLength) => testString < maxLength;
 stringLength();
 
-const randomNumber = function (numberFrom, numberBefore) {
+const getRandomNumber = function (numberFrom, numberBefore) {
   if (numberBefore <= numberFrom || numberFrom < 0) {
     return 0;
   }
@@ -64,21 +66,9 @@ const randomNumber = function (numberFrom, numberBefore) {
   return Math.floor(Math.random() * (numberBefore - numberFrom + 1) + numberFrom);
 };
 
-/*
-{
-   id: number,
-   url: ‘photos/${id}.jpg’,
-   description: string,
-   likes: number,
-   Comments: [
-      id: number,
-      avatar: string, // Тут должна быть одна из заранее созданных сслылок на аватарки, подробнее есть в домашке
-      message: string,
-      name: string,
-   ],
-}
-*/
-const getRandomArrayElement = (elements) => elements[randomNumber(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => {
+  return elements[getRandomNumber(0, elements.length - 1)];
+};
 
 let comment = 0;
 const getCommentId = () => {
@@ -86,20 +76,20 @@ const getCommentId = () => {
   return comment;
 };
 
-const createRandomComments = () => ({
-  id: getCommentId (),
-  avatar: 'img/avatar-${randomNumber(AVATARS.MIN,AVATARS.MAX)}.svg',
+const newComments = () => ({
+  id: getCommentId(),
+  avatar: 'img/avatar-${getRandomNumber(AVATARS.MIN,AVATARS.MAX)}.svg',
   message: getRandomArrayElement(commentMessage),
   name: getRandomArrayElement(commentName),
 });
 
-const createDescription = () => Array.from({length: PHOTO_AMOUNT}, (item, index) => ({
-  Id: index+1,
-  Url: 'photos/${index+1}.jpg',
-  Description: getRandomArrayElement(DESCRIPTIONS),
-  Likes: getRandomArrayElement(randomNumber(LIKES.MIN,LIKES.MAX)),
-  Comments: Array.from({length: randomNumber(commentsValues.MIN,commentsValues.MAX)}, createRandomComments),
+const postDesription = () => Array.from({length: PHOTO_AMOUNT}, (item, index) => ({
+  id: index + 1,
+  url: 'photos/${index + 1}.jpg',
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomArrayElement(LIKES),
+  Comments: Array.from({length: getRandomNumber(commentsValues.MIN,commentsValues.MAX)},newComments),
 }));
 
-createDescription ();
-console.log(createDescription);
+postDesription();
+
