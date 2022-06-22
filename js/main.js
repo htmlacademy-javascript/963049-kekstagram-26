@@ -89,4 +89,6 @@ const postDesription = () => Array.from({length: PHOTO_AMOUNT}, (item, index) =>
   Comments: Array.from({length: getRandomNumber(commentsValues.MIN,commentsValues.MAX)},newComments),
 }));
 
-postDesription();
+
+// eslint-disable-next-line no-console
+console.log(postDesription());
