@@ -1,5 +1,4 @@
-import {getRandomNumber} from './util.js';
-import {getRandomArrayElement} from './util.js';
+import {getRandomNumber, getRandomArrayElement} from './util.js';
 
 const PHOTO_AMOUNT = 25;
 
@@ -36,7 +35,6 @@ const LIKES = {
   MAX: 200,
 };
 
-// eslint-disable-next-line no-unused-vars
 const AVATARS = {
   MIN: 1,
   MAX: 6,

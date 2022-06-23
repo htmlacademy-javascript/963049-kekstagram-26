@@ -8,5 +8,4 @@ const getRandomNumber = function (numberFrom, numberBefore) {
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-export {getRandomNumber};
-export {getRandomArrayElement};
+export {getRandomNumber, getRandomArrayElement};
