@@ -77,7 +77,7 @@ const postDesription = () => Array.from({length: PHOTO_AMOUNT}, (item, index) =>
   url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomNumber(LIKES.MIN,LIKES.MAX),
-  Comments: Array.from({length: getRandomNumber(commentsValues.MIN,commentsValues.MAX)},newComments),
+  comments: Array.from({length: getRandomNumber(commentsValues.MIN,commentsValues.MAX)},newComments),
 }));
 
 export {postDesription};
