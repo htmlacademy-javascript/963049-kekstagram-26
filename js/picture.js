@@ -1,6 +1,6 @@
 import {postDesription} from './data.js';
 
-const pictureBlock = document.querySelector('.picture');
+const pictureBlock = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content.querySelector('.picture');
 
