@@ -1,11 +1,6 @@
-import {closePopap} from './bigpicture.js';
-
-const escCloseDown = () => {
-  window.addEventListener('keydown', (evt) => {
-    if (evt.key === 'esc') {
-      evt.preventDefault();
-      closePopap();
-    }
-  });
+//правильный код
+const isEscapeKey = (evt) => {
+  return evt.key === 'Escape';
 };
-export {escCloseDown};
+
+export {isEscapeKey};

@@ -17,3 +17,4 @@ pictureData.forEach(({url, comments, likes}) => {
 });
 
 pictureBlock.append(pictureFragment);
+export {pictureBlock};

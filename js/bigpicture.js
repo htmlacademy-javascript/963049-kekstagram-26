@@ -1,19 +1,15 @@
-import {escCloseDown} from './popap.js';
+import {isEscapeKey} from './popap.js';
+import {pictureBlock} from './picture.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = document.querySelector('.comments-loader');
-const window = document.querySelector('body');
-const closeButtonBigPicture = bigPicture.querySelector('.big-picture__cancel');
+const body = document.querySelector('body');
+const cancelBigPicture = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentsList = document.querySelector('.social__comments');
 const socialComment = document.querySelector('.social__comment');
+const socialCommentCount = document.querySelector('.social__comment-count');
 const SOCIAL_WIDTH = 35;
 const SOCIAL_HEIGHT = 35;
-
-export const closePopap = () => {
-  bigPicture.classList.add('hidden');
-  window.classList.remove('modal-open');
-  commentsLoader.classList.remove('hidden');
-};
 
 const getComment = ({avatar, name, message}) => {
   const socialCommentElement = socialComment.cloneNode(true);
@@ -41,16 +37,31 @@ const getBigPictureData = ({url, likes, comments, description}) => {
   bigPicture.querySelector('.comments-count').textContent = comments.length;
   bigPicture.querySelector('.social__caption').textContent = description;
 
-  document.addEventListener('keydown', escCloseDown );
+  //document.addEventListener('keydown', escCloseDown );
   addComments(comments);
+
   bigPicture.classList.remove('hidden');
   commentsLoader.classList.add('hidden');
-  window.classList.add('modal-open');
+  socialCommentCount.classList.add('hidden');
+  body.classList.add('modal-open');
 };
 
-closeButtonBigPicture.addEventListener('click', () => {
-  closePopap();
-  document.removeEventListener('keydown',escCloseDown);
+//открытие попапа
+pictureBlock.addEventListener('click', () => {
+  bigPicture.classList.remove('hidden');
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      bigPicture.classList.add('hidden');
+    }
+  });
+});
+//закрытие попапа
+cancelBigPicture.addEventListener('click', () => {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+  commentsLoader.classList.remove('hidden');
 });
 
 export {getBigPictureData};
