@@ -1,5 +1,5 @@
-import {isEscapeKey} from './popap.js';
 import {pictureBlock} from './picture.js';
+import {openUserModal, closeUserModal} from './popap.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = document.querySelector('.comments-loader');
@@ -40,28 +40,19 @@ const getBigPictureData = ({url, likes, comments, description}) => {
   //document.addEventListener('keydown', escCloseDown );
   addComments(comments);
 
-  bigPicture.classList.remove('hidden');
-  commentsLoader.classList.add('hidden');
   socialCommentCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
   body.classList.add('modal-open');
 };
-
 //открытие попапа
 pictureBlock.addEventListener('click', () => {
-  bigPicture.classList.remove('hidden');
-
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      bigPicture.classList.add('hidden');
-    }
-  });
+  openUserModal ();
 });
 //закрытие попапа
 cancelBigPicture.addEventListener('click', () => {
-  bigPicture.classList.add('hidden');
+  closeUserModal ();
   body.classList.remove('modal-open');
   commentsLoader.classList.remove('hidden');
 });
 
-export {getBigPictureData};
+export {getBigPictureData, bigPicture};
