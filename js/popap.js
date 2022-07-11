@@ -19,4 +19,3 @@ export function closeUserModal () {
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
-

@@ -1,5 +1,4 @@
-import {pictureBlock} from './picture.js';
-import {openUserModal, closeUserModal} from './popap.js';
+import {closeUserModal} from './popap.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = document.querySelector('.comments-loader');
@@ -32,7 +31,7 @@ const addComments = (comments) => {
 };
 
 const getBigPictureData = ({url, likes, comments, description}) => {
-  bigPicture.querySelector('.big-picture__img').src = url;
+  bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
   bigPicture.querySelector('.comments-count').textContent = comments.length;
   bigPicture.querySelector('.social__caption').textContent = description;
@@ -44,15 +43,11 @@ const getBigPictureData = ({url, likes, comments, description}) => {
   body.classList.add('modal-open');
 };
 
-//открытие попапа
-pictureBlock.addEventListener('click', () => {
-  openUserModal ();
-});
-
-//закрытие попапа
 cancelBigPicture.addEventListener('click', () => {
   closeUserModal ();
   body.classList.remove('modal-open');
   commentsLoader.classList.remove('hidden');
 });
+
 export {getBigPictureData, bigPicture};
+
