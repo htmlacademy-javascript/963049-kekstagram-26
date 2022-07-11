@@ -8,4 +8,6 @@ const getRandomNumber = function (numberFrom, numberBefore) {
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-export {getRandomNumber, getRandomArrayElement};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomNumber, getRandomArrayElement, isEscapeKey};
