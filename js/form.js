@@ -4,12 +4,19 @@ const uploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const uploadCancel = document.querySelector('#upload-cancel');
+const imgUploadForm = document.querySelector('.img-upload__form');
+const hashtagsElement = imgUploadForm.querySelector('.text__hashtags');
+const textDescriptionElement = imgUploadForm.querySelector('.text__description');
+const MAX_AMOUNT_HASHTAGS = 5;
+const MAX_AMOUNT_TEXT_DESCRIPTION = 140;
+//длина комментария не может составлять больше 140 символов;
+const countLengthDescription = getRandomArrayElement(textDescriptionElement.value, MAX_AMOUNT_TEXT_DESCRIPTION);
 
 uploadFile.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
+    if (isEscapeKey(evt) && document.activeElement !== textDescriptionElement) {
       evt.preventDefault();
       imgUploadOverlay.classList.add('hidden');
     }
@@ -21,34 +28,24 @@ uploadCancel.addEventListener('click', () => {
   body.classList.remove('modal-open');
 });
 
-const imgUploadForm = document.querySelector('.img-upload__form');
-const hashtagsElement = imgUploadForm.querySelector('.text__hashtags');
-const textDescriptionElement = imgUploadForm.querySelector('.text__description');
-const MAX_AMOUNT_HASHTAGS = 5;
-const MAX_AMOUNT_TEXT_DESCRIPTION = 140;
-
 //комментарий не обязателен
-const validateTextDescriptionNotRequired = (value) => {
-  const descriptionElement = imgUploadForm.querySelector('[name="description"]:required');
-  return textDescriptionElement.value !== descriptionElement.value;
-};
+const validateTextDescriptionNotRequired = (value) =>
+  textDescriptionElement.value !== value;
 
-//длина комментария не может составлять больше 140 символов;
-const countLengthDescription = getRandomArrayElement(textDescriptionElement.value, MAX_AMOUNT_TEXT_DESCRIPTION);
 
 //если фокус находится в поле ввода комментария, нажатие на Esc
 // не должно приводить к закрытию формы редактирования изображения.(НЕ РАБОТАЕТ)вариант 1
-const notEscapeTextDescription = () => {
-  if (textDescriptionElement.focus()) {
-    document.addEventListener('keydown', (evt) => {
-      if (isEscapeKey(evt)) {
-        evt.preventDefault();
-        imgUploadOverlay.classList.remove('hidden');
-      }
-    });
-  }
-};
-notEscapeTextDescription();
+//const notEscapeTextDescription = () => {
+//  if (textDescriptionElement.focus()) {
+//    document.addEventListener('keydown', (evt) => {
+//      if (isEscapeKey(evt)) {
+//        evt.preventDefault();
+//        imgUploadOverlay.classList.remove('hidden');
+//      }
+//    });
+//  }
+//};
+//notEscapeTextDescription();
 
 // не должно приводить к закрытию формы редактирования изображения.(НЕ РАБОТАЕТ)вариант 2
 textDescriptionElement.addEventListener('focus', (evt) => {
@@ -68,7 +65,7 @@ const validateHashtags = (value) => {
 
 const controlHashtagsSymbols = () => {
   const re = /^#[A-Za-zА-Яа-яЁё0-9]{1-19}i\s/;
-  validateHashtags().every((item) => re.test(item));
+  return validateHashtags().every((item) => re.test(item));
 };
 
 const controlHashtagsAmount = () => validateHashtags().length <= MAX_AMOUNT_HASHTAGS;
