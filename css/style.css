@@ -661,6 +661,8 @@ main {
  */
 
 .text {
+  display: grid;
+  gap: 20px;
   margin: 0;
   padding: 0;
   margin-bottom: 30px;
@@ -681,6 +683,24 @@ main {
   color: #000000;
 
   border-radius: 5px;
+}
+
+.img-upload__field-wrapper--invalid .text__hashtags,
+.img-upload__field-wrapper--invalid .text__description {
+  color: #D7373B;
+  border-color: #D7373B;
+  outline: none;
+}
+
+.img-upload__field-wrapper-error-message {
+  max-width: 450px;
+
+  margin: 0 auto;
+  margin-top: 5px;
+
+  line-height: 20px;
+  text-align: left;
+  text-transform: none;
 }
 
 .text__description {

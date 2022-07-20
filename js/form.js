@@ -9,8 +9,6 @@ const hashtagsElement = imgUploadForm.querySelector('.text__hashtags');
 const textDescriptionElement = imgUploadForm.querySelector('.text__description');
 const MAX_AMOUNT_HASHTAGS = 5;
 const MAX_AMOUNT_TEXT_DESCRIPTION = 140;
-//длина комментария не может составлять больше 140 символов;
-const countLengthDescription = getRandomArrayElement(textDescriptionElement.value, MAX_AMOUNT_TEXT_DESCRIPTION);
 
 uploadFile.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -28,55 +26,47 @@ uploadCancel.addEventListener('click', () => {
   body.classList.remove('modal-open');
 });
 
+// не должно приводить к закрытию формы редактирования изображения.
+hashtagsElement.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
+textDescriptionElement.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
+
 //комментарий не обязателен
 const validateTextDescriptionNotRequired = (value) =>
   textDescriptionElement.value !== value;
-
-
-//если фокус находится в поле ввода комментария, нажатие на Esc
-// не должно приводить к закрытию формы редактирования изображения.(НЕ РАБОТАЕТ)вариант 1
-//const notEscapeTextDescription = () => {
-//  if (textDescriptionElement.focus()) {
-//    document.addEventListener('keydown', (evt) => {
-//      if (isEscapeKey(evt)) {
-//        evt.preventDefault();
-//        imgUploadOverlay.classList.remove('hidden');
-//      }
-//    });
-//  }
-//};
-//notEscapeTextDescription();
-
-// не должно приводить к закрытию формы редактирования изображения.(НЕ РАБОТАЕТ)вариант 2
-textDescriptionElement.addEventListener('focus', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    imgUploadOverlay.classList.remove('hidden');
-  }
-});
+//длина комментария не может составлять больше 140 символов;
+const countLengthDescription = getRandomArrayElement(textDescriptionElement.value, MAX_AMOUNT_TEXT_DESCRIPTION);
 
 //валидация поля с хэштегом
 const validateHashtags = (value) => {
   const hashtags = value.split(' '); //валидация на пробелы между хэштегами
   const result = hashtags.filter(Boolean);
-  const uniqueHashtags = new Set(hashtags); //валидация на уникальность
-  return hashtags.length === uniqueHashtags.size && result;
+  return result;
 };
 
-const controlHashtagsSymbols = () => {
-  const re = /^#[A-Za-zА-Яа-яЁё0-9]{1-19}i\s/;
-  return validateHashtags().every((item) => re.test(item));
+const checkUniquesHashtags = (value) => {
+  const hashtags = validateHashtags(value);
+  const uniquesHashtags = new Set(hashtags); //валидация на уникальность
+  return hashtags.length === uniquesHashtags.size;
 };
 
-const controlHashtagsAmount = () => validateHashtags().length <= MAX_AMOUNT_HASHTAGS;
+const controlHashtagsSymbols = (value) => {
+  const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+  return validateHashtags(value).every((item) => re.test(item));
+};
+
+const controlHashtagsAmount = (value) => validateHashtags(value).length <= MAX_AMOUNT_HASHTAGS;
 
 const pristine = new Pristine(imgUploadForm, {
-  classTo: 'text__hashtags', // Элемент, на который будут добавляться классы
-  errorClass: 'text__hashtags--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'text__hashtags--valid', // Класс, обозначающий валидное поле
-  errorTextParent: 'text__hashtags', // Элемент, куда будет выводиться текст с ошибкой
+  classTo: 'img-upload__field-wrapper', // Элемент, на который будут добавляться классы
+  errorClass: 'img-upload__field-wrapper--invalid', // Класс, обозначающий невалидное поле
+  successClass: 'img-upload__field-wrapper--valid', // Класс, обозначающий валидное поле
+  errorTextParent: 'img-upload__field-wrapper', // Элемент, куда будет выводиться текст с ошибкой
   errorTextTag: 'p', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'text__hashtags__error' // Класс для элемента с текстом ошибки
+  errorTextClass: 'img-upload__field-wrapper-error-message' // Класс для элемента с текстом ошибки
 });
 
 pristine.addValidator(hashtagsElement, controlHashtagsSymbols ,
@@ -84,8 +74,10 @@ pristine.addValidator(hashtagsElement, controlHashtagsSymbols ,
   ' строка после решётки должна состоять из букв и чисел,' +
   ' хеш-тег должен быть от 2 до 20 символов, ' +
   'хэш-теги нечувствительны к регистру');
-pristine.addValidator(hashtagsElement, validateHashtags, 'хэш-теги разделяются пробелами,' +
-  'один и тот же хэш-тег не может быть использован дважды' );
+pristine.addValidator(hashtagsElement, validateHashtags,
+  'хэш-теги разделяются пробелами');
+pristine.addValidator(hashtagsElement, checkUniquesHashtags,
+  'один и тот же хэш-тег не может быть использован дважды');
 pristine.addValidator(hashtagsElement, controlHashtagsAmount,
   'нельзя указать больше пяти хэш-тегов');
 pristine.addValidator(textDescriptionElement, validateTextDescriptionNotRequired,
@@ -95,5 +87,8 @@ pristine.addValidator(textDescriptionElement, countLengthDescription,
 
 imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    imgUploadForm.submit();
+  }
 });
