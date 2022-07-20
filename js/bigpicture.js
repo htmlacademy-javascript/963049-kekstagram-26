@@ -1,4 +1,5 @@
 import {closeUserModal} from './popap.js';
+//import {imgUploadOverlay} from './form.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = document.querySelector('.comments-loader');
@@ -50,4 +51,3 @@ cancelBigPicture.addEventListener('click', () => {
 });
 
 export {getBigPictureData, bigPicture};
-
