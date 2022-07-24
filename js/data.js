@@ -53,7 +53,7 @@ const commentName = ['Артём','Вася','Коля','Петя','Вова','�
 
 const commentsValues = {
   MIN: 1,
-  MAX: 3,
+  MAX: 20,
 };
 
 const stringLength = (testString, maxLength) => testString < maxLength;
