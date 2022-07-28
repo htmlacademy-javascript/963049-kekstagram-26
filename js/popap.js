@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {bigPicture} from './bigpicture.js';
+import {bigPicture, resetCommentsCounts} from './bigpicture.js';
 
 export const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -16,6 +16,6 @@ export function openUserModal () {
 
 export function closeUserModal () {
   bigPicture.classList.add('hidden');
-
+  resetCommentsCounts();
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
