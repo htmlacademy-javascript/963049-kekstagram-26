@@ -54,6 +54,7 @@ const showComments = () => {
 
 const getBigPictureData = ({url, likes, comments, description}) => {
   commentsData = comments;
+  commentsLoader.addEventListener('click', showComments);
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
   bigPicture.querySelector('.social__caption').textContent = description;
@@ -78,6 +79,5 @@ cancelBigPicture.addEventListener('click', () => {
   resetCommentsCounts();
 });
 
-commentsLoader.addEventListener('click', showComments);
 
 export {getBigPictureData, bigPicture, resetCommentsCounts};
