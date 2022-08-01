@@ -1,4 +1,5 @@
-import {getRandomArrayElement, isEscapeKey} from './util.js';
+import {getRandomArrayElement, isEscapeKey, showAlert} from './util.js';
+import {sendData} from './api.js';
 
 const uploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -7,6 +8,7 @@ const uploadCancel = document.querySelector('#upload-cancel');
 const imgUploadForm = document.querySelector('.img-upload__form');
 const hashtagsElement = imgUploadForm.querySelector('.text__hashtags');
 const textDescriptionElement = imgUploadForm.querySelector('.text__description');
+const formSubmitElement = imgUploadForm.querySelector('.img-upload__submit');
 const MAX_AMOUNT_HASHTAGS = 5;
 const MAX_AMOUNT_TEXT_DESCRIPTION = 140;
 
@@ -85,10 +87,36 @@ pristine.addValidator(textDescriptionElement, validateTextDescriptionNotRequired
 pristine.addValidator(textDescriptionElement, countLengthDescription,
   'длина комментария не может составлять больше 140 символов');
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
-    imgUploadForm.submit();
-  }
-});
+const blockSubmitButton = () => {
+  formSubmitElement.disabled = true;
+  formSubmitElement.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  formSubmitElement.disabled = false;
+  formSubmitElement.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+        },
+        () => {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+export {setUserFormSubmit};
